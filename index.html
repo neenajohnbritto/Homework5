@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Work Day Scheduler</title>
+  </head>
+
+  <body>
+    <header class="jumbotron">
+      <h1 class="display-3">Work Day Scheduler</h1>
+      <p class="lead">A simple calendar app for scheduling your work day</p>
+      <p id="currentDay" class="lead"></p>
+    </header>
+    <div class="container">
+      <!-- Timeblocks go here -->
+      <div class="row">
+        <p class="col-md-1">9 AM</p>
+        <input type="text" class="col-md-10" id="calender-cell1">
+        <button class="col-md-1" id="save-image1">
+          <img src="saveIcon.png" height="80" width="80"/>
+        </button>
+      </div>
+      <div class="row">
+        <p class="col-md-1">10 AM</p>
+        <input type="text" class="col-md-10" id="calender-cell2">
+        <button class="col-md-1" id="save-image2">
+            <img src="saveIcon.png" height="80" width="80"/>
+        </button>
+        
+      </div>
+      <div class="row">
+        <p class="col-md-1">11 AM</p>
+        <input type="text" class="col-md-10" id="calender-cell3">
+        <button class="col-md-1" id="save-image3">
+            <img src="saveIcon.png" height="80" width="80"/>
+        </button>
+      </div>
+      <div class="row">
+        <p class="col-md-1">12 PM</p>
+        <input type="text" class="col-md-10" id="calender-cell4">
+        <button class="col-md-1" id="save-image4">
+            <img src="saveIcon.png" height="80" width="80"/>
+        </button>
+      </div>
+      <div class="row">
+        <p class="col-md-1">1 PM</p>
+        <input type="text" class="col-md-10" id="calender-cell5">
+        <button class="col-md-1" id="save-image5">
+            <img src="saveIcon.png" height="80" width="80"/>
+        </button>
+      </div>
+      <div class="row">
+        <p class="col-md-1">2 PM</p>
+        <input type="text" class="col-md-10" id="calender-cell6">
+        <button class="col-md-1" id="save-image6">
+            <img src="saveIcon.png" height="80" width="80"/>
+        </button>
+      </div>
+      <div class="row">
+        <p class="col-md-1">3 PM</p>
+        <input type="text" class="col-md-10" id="calender-cell7">
+        <button class="col-md-1" id="save-image7">
+            <img src="saveIcon.png" height="80" width="80"/>
+        </button>
+      </div>
+      <div class="row">
+        <p class="col-md-1">4 PM</p>
+        <input type="text" class="col-md-10" id="calender-cell8">
+        <button class="col-md-1" id="save-image8">
+            <img src="saveIcon.png" height="80" width="80"/>
+        </button>
+      </div>
+      
+      
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script type="text/javascript">
+    var timeStamp = moment().format('MMMM Do YYYY, h:mm:ss a');
+    //var currentDate = currentTime.format("dddd, MMMM Do YYYY");
+    var currentDate = timeStamp.substr(0,timeStamp.indexOf(','));
+    var currentTime = timeStamp.substr(timeStamp.indexOf(',')+1);
+
+    $("#currentDay").text(currentDate);
+    
+    console.log(currentDate);
+    console.log(currentTime);
+
+    
+
+    if(currentTime.includes("pm")){
+      console.log("its pm");
+      
+    }
+    else{
+      console.log("its am");
+    }
+
+    currentTime = currentTime.substr(0,currentTime.indexOf(':'));
+
+    console.log(currentTime);
+
+    var keys = Object.keys(localStorage);
+    if(keys.length > 0){
+      for(var i=0; i<keys.length; i++){
+        var calendarCellId = "#"+keys[i];
+        calendarCellId = "\""+calendarCellId+"\"";
+        console.log(calendarCellId);
+        var calendarCellValue = window.localStorage.getItem(keys[i]);
+        console.log(calendarCellValue);
+        $(calendarCellId).text(calendarCellValue);
+        
+      }
+    }
+
+    $("button").on("click", function() {
+      var buttonClicked = this.id;
+      var buttonId = buttonClicked.charAt(10);
+      console.log(buttonId);
+      var enteredValue = document.getElementById("calender-cell" + buttonId).value;
+    
+    console.log(enteredValue);
+    localStorage.setItem("calender-cell" + buttonId, enteredValue);
+    });
+    
+    </script>
+  </body>
+</html>
