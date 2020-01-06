@@ -32,14 +32,14 @@
       <!-- Timeblocks go here -->
       <div class="row">
         <p class="col-md-1">9 AM</p>
-        <input type="text" class="col-md-10" id="calender-cell1">
+        <input type="text" class="col-md-10 9AM" id="calender-cell1">
         <button class="col-md-1" id="save-image1">
           <img src="saveIcon.png" height="80" width="80"/>
         </button>
       </div>
       <div class="row">
         <p class="col-md-1">10 AM</p>
-        <input type="text" class="col-md-10" id="calender-cell2">
+        <input type="text" class="col-md-10 10AM" id="calender-cell2">
         <button class="col-md-1" id="save-image2">
             <img src="saveIcon.png" height="80" width="80"/>
         </button>
@@ -47,42 +47,42 @@
       </div>
       <div class="row">
         <p class="col-md-1">11 AM</p>
-        <input type="text" class="col-md-10" id="calender-cell3">
+        <input type="text" class="col-md-10 11AM" id="calender-cell3">
         <button class="col-md-1" id="save-image3">
             <img src="saveIcon.png" height="80" width="80"/>
         </button>
       </div>
       <div class="row">
         <p class="col-md-1">12 PM</p>
-        <input type="text" class="col-md-10" id="calender-cell4">
+        <input type="text" class="col-md-10 Noon" id="calender-cell4">
         <button class="col-md-1" id="save-image4">
             <img src="saveIcon.png" height="80" width="80"/>
         </button>
       </div>
       <div class="row">
         <p class="col-md-1">1 PM</p>
-        <input type="text" class="col-md-10" id="calender-cell5">
+        <input type="text" class="col-md-10 1PM" id="calender-cell5">
         <button class="col-md-1" id="save-image5">
             <img src="saveIcon.png" height="80" width="80"/>
         </button>
       </div>
       <div class="row">
         <p class="col-md-1">2 PM</p>
-        <input type="text" class="col-md-10" id="calender-cell6">
+        <input type="text" class="col-md-10 2PM" id="calender-cell6">
         <button class="col-md-1" id="save-image6">
             <img src="saveIcon.png" height="80" width="80"/>
         </button>
       </div>
       <div class="row">
         <p class="col-md-1">3 PM</p>
-        <input type="text" class="col-md-10" id="calender-cell7">
+        <input type="text" class="col-md-10 3PM" id="calender-cell7">
         <button class="col-md-1" id="save-image7">
             <img src="saveIcon.png" height="80" width="80"/>
         </button>
       </div>
       <div class="row">
         <p class="col-md-1">4 PM</p>
-        <input type="text" class="col-md-10" id="calender-cell8">
+        <input type="text" class="col-md-10 4PM" id="calender-cell8">
         <button class="col-md-1" id="save-image8">
             <img src="saveIcon.png" height="80" width="80"/>
         </button>
@@ -95,39 +95,89 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script type="text/javascript">
     var timeStamp = moment().format('MMMM Do YYYY, h:mm:ss a');
-    //var currentDate = currentTime.format("dddd, MMMM Do YYYY");
     var currentDate = timeStamp.substr(0,timeStamp.indexOf(','));
     var currentTime = timeStamp.substr(timeStamp.indexOf(',')+1);
+    var currentTimeNum = "";
 
     $("#currentDay").text(currentDate);
     
     console.log(currentDate);
     console.log(currentTime);
+    currentTimeNum = currentTime.substr(0,currentTime.indexOf(':'));
+
+    console.log(currentTimeNum);
 
     
 
     if(currentTime.includes("pm")){
       console.log("its pm");
-      
+      currentTime = currentTimeNum + "PM";
     }
     else{
       console.log("its am");
+      currentTime = currentTimeNum + "AM";
+    }
+    
+    console.log(currentTime);
+    if(currentTime == "12PM"){
+      currentTime = "Noon";
     }
 
-    currentTime = currentTime.substr(0,currentTime.indexOf(':'));
+    if ( $('input').hasClass(currentTime)) {
+      
+      var inputPresent = document.getElementsByClassName(currentTime);
+      var inputClass = "";
+      var idMatches = false;
+      var afterMatch = false;
+      var matchedIndex = 0;
+      var numOfPast = 0;
+      var numOfFuture = 0;
+      var inputs = document.getElementsByTagName("input");
+      for(i=0; i<inputs.length; i++){
+        inputClass = inputs[i].getAttribute('class');
+        if(inputClass.includes(currentTime)) {
+          inputs[i].classList.add("present");
+          matchedIndex = i;
+          numOfPast = matchedIndex - 1;
+          numOfFuture = inputs.length - matchedIndex;
+          futureStart = matchedIndex + 1;
+          break;
+        }
+      }
+      for(j=0;j<=numOfPast;j++){
+        inputClass = inputs[j].getAttribute('class');
+        inputs[j].classList.add("past");
+      }
+      for(k=futureStart;k<inputs.length;k++){
+        inputClass = inputs[k].getAttribute('class');
+        inputs[k].classList.add("future");
+      }
+    }
+    else if(currentTime.includes("PM") && currentTimeNum > 4){
+      var inputs = document.getElementsByTagName("input");
+      for(i=0; i<inputs.length; i++){
+        inputs[i].classList.add("past");
+      }
+    }
+    else if(currentTime.includes("AM") && (currentTimeNum < 9 || currentTimeNum == 12)){
+      var inputs = document.getElementsByTagName("input");
+      for(i=0; i<inputs.length; i++){
+        inputs[i].classList.add("future");
+      }
+    }
+    
 
-    console.log(currentTime);
+    
 
     var keys = Object.keys(localStorage);
     if(keys.length > 0){
       for(var i=0; i<keys.length; i++){
         var calendarCellId = "#"+keys[i];
         calendarCellId = "\""+calendarCellId+"\"";
-        console.log(calendarCellId);
+        console.log("#"+keys[i] );
         var calendarCellValue = window.localStorage.getItem(keys[i]);
         console.log(calendarCellValue);
-        $(calendarCellId).text(calendarCellValue);
-        
+        document.getElementById(keys[i]).value = calendarCellValue;
       }
     }
 
@@ -136,9 +186,8 @@
       var buttonId = buttonClicked.charAt(10);
       console.log(buttonId);
       var enteredValue = document.getElementById("calender-cell" + buttonId).value;
-    
-    console.log(enteredValue);
-    localStorage.setItem("calender-cell" + buttonId, enteredValue);
+      console.log(enteredValue);
+      localStorage.setItem("calender-cell" + buttonId, enteredValue);
     });
     
     </script>
