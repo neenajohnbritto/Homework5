@@ -96,7 +96,7 @@
     <script type="text/javascript">
     var timeStamp = moment().format('MMMM Do YYYY, h:mm:ss a');
     var currentDate = timeStamp.substr(0,timeStamp.indexOf(','));
-    var currentTime = timeStamp.substr(timeStamp.indexOf(',')+1);
+    var currentTime = timeStamp.substr(timeStamp.indexOf(',')+2);
     var currentTimeNum = "";
 
     $("#currentDay").text(currentDate);
@@ -123,8 +123,16 @@
       currentTime = "Noon";
     }
 
+    var currentTimeNew = "10AM";
+
+    if(currentTimeNew === currentTime){
+      console.log("hellooooooo");
+    }
+    console.log(currentTime);
+    //currentTime = "10AM";
+
     if ( $('input').hasClass(currentTime)) {
-      
+      console.log("am here");
       var inputPresent = document.getElementsByClassName(currentTime);
       var inputClass = "";
       var idMatches = false;
